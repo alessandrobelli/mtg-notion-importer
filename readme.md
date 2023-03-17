@@ -67,16 +67,16 @@ Below is the structure of the Notion database for managing your Magic: The Gathe
 |------------------|---------------|-------------------------------------------------------------------------------------------------|
 | Name             | Title         | card.get("name", "")                                                                            |
 | Type             | Multi-select  | [t for t in card.get("type_line", "").split(" // ")]                                           |
-| Mana Cost        | Rich Text     | card.get("mana_cost", "")                                                                       |
+| Mana Cost        | Text          | card.get("mana_cost", "")                                                                       |
 | Set              | Multi-select  | card.get("set_name", "")                                                                        |
 | Rarity           | Select        | card.get("rarity", "").capitalize()                                                             |
-| Text             | Rich Text     | card.get("oracle_text", "")                                                                     |
-| Flavor Text      | Rich Text     | card.get("flavor_text", "")                                                                     |
-| Power            | Rich Text     | card.get("power", "")                                                                           |
-| Toughness        | Rich Text     | card.get("toughness", "")                                                                       |
-| Power/Toughness  | Rich Text     | f"{card.get('power', '')}/{card.get('toughness', '')}"                                         |
+| Text             | Text          | card.get("oracle_text", "")                                                                     |
+| Flavor Text      | Text          | card.get("flavor_text", "")                                                                     |
+| Power            | Text          | card.get("power", "")                                                                           |
+| Toughness        | Text          | card.get("toughness", "")                                                                       |
+| Power/Toughness  | Text          | f"{card.get('power', '')}/{card.get('toughness', '')}"                                         |
 | Loyalty          | Number        | int(card.get("loyalty", 0)) if card.get("loyalty") else None                                   |
 | Legalities       | Multi-select  | format_legalities(card.get("legalities", {}))                                                   |
-| Artist           | Rich Text     | card.get("artist", "")                                                                          |
+| Artist           | Text          | card.get("artist", "")                                                                          |
 | Keywords         | Multi-select  | extract_keywords(card.get("oracle_text", ""))                                                   |
-| Scryfall ID      | Rich Text     | card.get("id", "")
+| Scryfall ID      | Text          | card.get("id", "")
