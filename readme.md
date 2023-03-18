@@ -63,20 +63,20 @@ Run the script to start importing cards to your Notion database. The script will
 
 Below is the structure of the Notion database for managing your Magic: The Gathering card collection:
 
-| Column Name      | Column Type   | Content                                                                                         |
-|------------------|---------------|-------------------------------------------------------------------------------------------------|
-| Name             | Title         | card.get("name", "")                                                                            |
-| Type             | Multi-select  | [t for t in card.get("type_line", "").split(" // ")]                                           |
-| Mana Cost        | Text          | card.get("mana_cost", "")                                                                       |
-| Set              | Multi-select  | card.get("set_name", "")                                                                        |
-| Rarity           | Select        | card.get("rarity", "").capitalize()                                                             |
-| Text             | Text          | card.get("oracle_text", "")                                                                     |
-| Flavor Text      | Text          | card.get("flavor_text", "")                                                                     |
-| Power            | Text          | card.get("power", "")                                                                           |
-| Toughness        | Text          | card.get("toughness", "")                                                                       |
-| Power/Toughness  | Text          | f"{card.get('power', '')}/{card.get('toughness', '')}"                                         |
-| Loyalty          | Number        | int(card.get("loyalty", 0)) if card.get("loyalty") else None                                   |
-| Legalities       | Multi-select  | format_legalities(card.get("legalities", {}))                                                   |
-| Artist           | Text          | card.get("artist", "")                                                                          |
-| Keywords         | Multi-select  | extract_keywords(card.get("oracle_text", ""))                                                   |
-| Scryfall ID      | Text          | card.get("id", "")
+| Column Name      | Column Type   | Description                                               |
+|------------------|---------------|-----------------------------------------------------------|
+| Name             | Title         | Name of the card                                          |
+| Type             | Multi-select  | Card type(s)                                              |
+| Mana Cost        | Text          | Mana cost of the card                                     |
+| Set              | Multi-select  | Set the card belongs to                                   |
+| Rarity           | Select        | Rarity of the card                                        |
+| Text             | Text          | Oracle text of the card                                   |
+| Flavor Text      | Text          | Flavor text of the card                                   |
+| Power            | Text          | Power of the card (for creatures)                         |
+| Toughness        | Text          | Toughness of the card (for creatures)                     |
+| Power/Toughness  | Text          | Combined power/toughness (for creatures)                  |
+| Loyalty          | Text          | Loyalty of the card (for planeswalkers)                   |
+| Legalities       | Multi-select  | Legalities in various formats                             |
+| Artist           | Text          | Name of the card's artist                                 |
+| Keywords         | Multi-select  | Keywords found in the card's oracle text                  |
+| Scryfall ID      | Text          | Unique identifier for the card from Scryfall database     |
