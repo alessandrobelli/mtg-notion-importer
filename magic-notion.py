@@ -13,7 +13,9 @@ import os
 import time
 from requests.exceptions import HTTPError
 import notion_client.errors
+import json
 from tenacity import retry, stop_after_attempt, wait_exponential
+
 # Create the logs directory if it doesn't exist
 if not os.path.exists("logs"):
     os.makedirs("logs")
@@ -36,6 +38,26 @@ total_cards = 0
 current_card = 0
 
 notion = Client(auth=os.environ["NOTION_API_KEY"])
+
+
+# Add this function to get the most recent card from your Notion database
+def get_most_recent_card():
+    # Replace this with the appropriate ID of your database
+    database_id = os.environ["DATABASE_ID"]
+
+    # Query the Notion database sorted by "updated_at" in descending order
+    results = notion.databases.query(
+        **{
+            "database_id": database_id,
+            "sort": {
+                "property": "updated_at",
+                "direction": "descending"
+            }
+        }
+    ).get("results")
+
+    # Return the first result, which is the most recent card
+    return results[0] if results else None
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=30))
@@ -111,7 +133,7 @@ def update_or_create_page(card, existing_page=None):
         for attempt in range(max_retries):
             try:
                 base_page_create = {
-                    "parent": {"database_id": "6a215605f0c6403f99f13b2896990d7a"},
+                    "parent": {"database_id": os.environ["DATABASE_ID"]},
                     "properties": new_page,
                 }
 
@@ -324,11 +346,30 @@ def import_cards():
     global total_cards
     notion = Client(auth=os.environ["NOTION_API_KEY"])
 
+    # Prompt the user to choose whether to continue or start from the beginning
+    # Prompt the user to choose whether to continue or start from the beginning
+    user_input = input(
+        "Do you want to continue from the last card fetched in Notion? (yes/no): ").lower()
+    continue_from_last = user_input == "yes" or user_input == "y"
+
+
     sets_url = "https://api.scryfall.com/sets"
     response = requests.get(sets_url)
 
     if response.status_code == 200:
         sets = response.json()["data"]
+
+        if continue_from_last:
+            most_recent_card = get_most_recent_card()
+            
+            if most_recent_card:
+                # Get the set of the most recent card
+                most_recent_set = most_recent_card["properties"]["Set"]["multi_select"][0]["name"]
+                
+                # Remove sets from the list until you find the most recent card's set
+                while sets and sets[0]["name"] != most_recent_set:
+                    sets.pop(0)
+
 
         for mtg_set in sets:
             set_code = mtg_set["code"]
@@ -363,6 +404,5 @@ def import_cards():
     else:
         logging.info(
             f"Failed to fetch sets from Scryfall API. Status code: {response.status_code}")
-
 
 import_cards()
