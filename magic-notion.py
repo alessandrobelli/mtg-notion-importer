@@ -72,7 +72,7 @@ def update_or_create_page(card, existing_page=None):
         "Name": {"title": [{"text": {"content": card.get("name", "")}}]},
         "Type": {"multi_select": [{"name": t} for t in card.get("type_line", "").split(" // ")]},
         "Mana Cost": {"rich_text": [{"text": {"content": card.get("mana_cost", "")}}]},
-        "Set": {"multi_select": [{"name": card.get("set_name", "")}]},
+        "Set": {"multi_select": [{"name": card.get("set_name", "").replace(',', ' ')}]},
         "Rarity": {"select": {"name": card.get("rarity", "").capitalize()}},
         "Text": {"rich_text": [{"text": {"content": card.get("oracle_text", "")}}]},
         "Flavor Text": {"rich_text": [{"text": {"content": card.get("flavor_text", "")}}]},
