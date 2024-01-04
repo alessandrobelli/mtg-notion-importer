@@ -67,10 +67,10 @@ def update_or_create_page(card, existing_page=None):
     image_uris = card.get("image_uris", {})
     max_retries = 3
     retry_interval = 5  # seconds
-
+    type_line = card.get("type_line", "").split(" // ")
     new_page = {
         "Name": {"title": [{"text": {"content": card.get("name", "")}}]},
-        "Type": {"multi_select": [{"name": t} for t in card.get("type_line", "").split(" // ")]},
+        "Type": {"multi_select": [{"name": t} for t in type_line if t]},  # Check if t is not empty
         "Mana Cost": {"rich_text": [{"text": {"content": card.get("mana_cost", "")}}]},
         "Set": {"multi_select": [{"name": card.get("set_name", "").replace(',', ' ')}]},
         "Rarity": {"select": {"name": card.get("rarity", "").capitalize()}},
@@ -346,7 +346,6 @@ def import_cards():
     global total_cards
     notion = Client(auth=os.environ["NOTION_API_KEY"])
 
-    # Prompt the user to choose whether to continue or start from the beginning
     # Prompt the user to choose whether to continue or start from the beginning
     user_input = input(
         "Do you want to continue from the last card fetched in Notion? (yes/no): ").lower()
