@@ -80,3 +80,4 @@ Below is the structure of the Notion database for managing your Magic: The Gathe
 | Artist           | Text          | Name of the card's artist                                 |
 | Keywords         | Multi-select  | Keywords found in the card's oracle text                  |
 | Scryfall ID      | Text          | Unique identifier for the card from Scryfall database     |
+| Illustration     | Files         | Card Image                                                |
