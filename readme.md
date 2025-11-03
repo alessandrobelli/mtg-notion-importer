@@ -1,3 +1,8 @@
+## ⚠️⚠️⚠️ No Longer Maintained ⚠️⚠️⚠️
+
+This project is no longer actively maintained as I've stopped using Notion. Feel free to fork and adapt it for your own use!
+
+
 # 🌟 Magic: The Gathering Card Importer for Notion 🌟
 
 This script imports Magic: The Gathering cards from the Scryfall API to a Notion database. It creates or updates pages for each card, adding relevant card information and images. 
